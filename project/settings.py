@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ack#p61ih%b42ai(rc+bw!#ly%(d)ko^+)1w57j=im=faabs5a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['138.197.191.174']
+ALLOWED_HOSTS = ['138.197.191.174','localhost:8000', 'localhost']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
