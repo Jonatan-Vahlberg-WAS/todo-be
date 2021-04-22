@@ -19,7 +19,6 @@ class ListSerializer(serializers.ModelSerializer):
         fields = ('title','updated_at','id','tasks')
     
     def create(self,validated_data):
-        print(validated_data)
         tasks = validated_data.pop('tasks')
         _list = List.objects.create(**validated_data)
         for task in tasks:
@@ -34,12 +33,8 @@ class ListSerializer(serializers.ModelSerializer):
         instance.save()
 
         keep_tasks = []
-        print("TASKS")
-        print(type([]))
         exsisting_ids = [task.id for task in instance.tasks.all()]
         for task in tasks:
-            print("TASK")
-            print("id" in task.keys())
             if "id" in task.keys():
                 if Task.objects.filter(id=task["id"]).exists():
                     t = Task.objects.get(id=task["id"])
