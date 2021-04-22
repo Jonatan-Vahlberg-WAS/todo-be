@@ -11,10 +11,10 @@ from .models import List,Task
 def api_overview(request):
     api_urls = {
         'List': '/lists/',
-        'Detail View': '/list/<str:pk>/',
-        'Create': '/list/create/',
-        'Update': '/list/update/<str:pk>/',
-        'Delete': '/list/delete/<str:pk>/',
+        'Detail View': '/lists/detail/<str:pk>/',
+        'Create': '/lists/create/',
+        'Update': '/lists/update/<str:pk>/',
+        'Delete': '/lists/delete/<str:pk>/',
     }
     return Response(api_urls)
 
@@ -37,10 +37,16 @@ def create_list(request):
         serializer.save()
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['PUT'])
 def update_list(request, pk):
     list_item = List.objects.get(id=pk)
     serializer = ListSerializer(instance=list_item, data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
+
+@api_view(['DELETE'])
+def delete_list(request, pk):
+    list_item = List.objects.get(id=pk)
+    list_item.delete()
+    return Response("List deleted successfully")
