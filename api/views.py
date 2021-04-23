@@ -1,23 +1,42 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.response import Response
-from .serializers import ListSerializer, TaskSerializer
+from rest_framework import status
+from .serializers import UserSerilizer, ListSerializer, TaskSerializer
 from .models import List,Task
 from django.http import Http404
 # Create your views here.
 
-#GET
+
 
 @api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
 def api_overview(request):
     api_urls = {
-        'List': '/api/lists/',
-        'Detail View': '/api/lists/detail/<str:pk>/',
-        'Create': '/api/lists/create/',
-        'Update': '/api/lists/update/<str:pk>/',
-        'Delete': '/api/lists/delete/<str:pk>/',
+        'POST: Create user': '/api/user/create',
+        'POST: Obtain Token':'/api/token/',
+        'POST: Refresh Token':'/api/token/refresh/',
+        '':'',
+        'GET: List': '/api/lists/',
+        'GET: Detail View': '/api/lists/detail/<str:pk>/',
+        'POST: Create': '/api/lists/create/',
+        'PUT: Update': '/api/lists/update/<str:pk>/',
+        'DELETE: Delete': '/api/lists/delete/<str:pk>/',
+        '':'',
     }
     return Response(api_urls)
+
+@api_view(['POST'])
+@authentication_classes([])
+@permission_classes([])
+def create_user(request):
+    serializer = UserSerilizer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST) 
 
 @api_view(['GET'])
 def get_lists(request):
